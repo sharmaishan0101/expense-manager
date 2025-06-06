@@ -1,0 +1,26 @@
+/* src/pages/LandingPage.css */
+.landing-container {
+  height: 100vh;
+  background-color: #f3e6d3; /* same background as main */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align top */
+  align-items: center;
+  padding-top: 50px; /* some spacing from top */
+  text-align: center;
+}
+
+.fade-in-text {
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+}
+
+.delay {
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
