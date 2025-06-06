@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import Sidebar from './components/Sidebar';
 import LandingPage from './pages/LandingPage';
-import DebitCardDemoPage from './pages/DebitCardDemoPage';  // moved here
+import DebitCardDemoPage from './pages/DebitCardDemoPage';
 import InsightPage from './pages/InsightPage';
 import InvestmentPage from './pages/InvestmentPage';
 import LearningPage from './pages/LearningPage';
 
-const pages = ['/', '/debit-demo', '/insight', '/investment', '/learning'];  // reordered
+const pages = ['/', '/debit-demo', '/insight', '/investment', '/learning'];
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -16,34 +16,46 @@ export default function App() {
   const location = useLocation();
 
   const [currentIndex, setCurrentIndex] = useState(pages.indexOf(location.pathname));
-  const isScrollingRef = useRef(false);
+  const containerRef = useRef(null);
+  const isAnimatingRef = useRef(false);
 
   // Sync currentIndex with URL on location change
   useEffect(() => {
     const idx = pages.indexOf(location.pathname);
-    if (idx !== -1) setCurrentIndex(idx);
+    if (idx !== -1 && idx !== currentIndex) {
+      setCurrentIndex(idx);
+    }
   }, [location.pathname]);
 
-  // Scroll handler with smooth scroll animation
-  const handleWheel = (e) => {
-    if (isScrollingRef.current) return; // prevent multiple triggers while scrolling
+  // Smooth scroll to page on index change (triggered by sidebar/dots click or URL change)
+  useEffect(() => {
+    if (!containerRef.current) return;
 
-    if (e.deltaY > 0 && currentIndex < pages.length - 1) {
-      isScrollingRef.current = true;
-      setCurrentIndex((prev) => {
-        const next = prev + 1;
-        navigate(pages[next]);
-        return next;
-      });
-      setTimeout(() => { isScrollingRef.current = false; }, 800);
-    } else if (e.deltaY < 0 && currentIndex > 0) {
-      isScrollingRef.current = true;
-      setCurrentIndex((prev) => {
-        const next = prev - 1;
-        navigate(pages[next]);
-        return next;
-      });
-      setTimeout(() => { isScrollingRef.current = false; }, 800);
+    const scrollToPosition = currentIndex * window.innerHeight;
+    isAnimatingRef.current = true;
+
+    containerRef.current.scrollTo({
+      top: scrollToPosition,
+      behavior: 'smooth',
+    });
+
+    const timeoutId = setTimeout(() => {
+      isAnimatingRef.current = false;
+    }, 700);
+
+    return () => clearTimeout(timeoutId);
+  }, [currentIndex]);
+
+  // When user scrolls manually inside container, update currentIndex accordingly
+  const onScroll = () => {
+    if (isAnimatingRef.current) return;
+
+    const scrollTop = containerRef.current.scrollTop;
+    const newIndex = Math.round(scrollTop / window.innerHeight);
+
+    if (newIndex !== currentIndex && newIndex >= 0 && newIndex < pages.length) {
+      setCurrentIndex(newIndex);
+      navigate(pages[newIndex], { replace: true });
     }
   };
 
@@ -53,6 +65,7 @@ export default function App() {
 
   const handleIndicatorClick = (idx) => {
     if (idx === currentIndex) return;
+    isAnimatingRef.current = true; // Prevent onScroll during programmatic scroll
     setCurrentIndex(idx);
     navigate(pages[idx]);
   };
@@ -78,38 +91,64 @@ export default function App() {
 
       {/* Main content container */}
       <div
-        onWheel={handleWheel}
+        ref={containerRef}
+        onScroll={onScroll}
         style={{
           marginLeft: sidebarOpen ? 200 : 50,
           height: '100vh',
-          flexGrow: 1,
-          overflow: 'hidden',
+          width: '100%',
+          overflowY: 'auto',
+          scrollSnapType: 'y mandatory',
+          scrollBehavior: 'smooth',
+          backgroundColor: '#ecf39e',
           position: 'relative',
-          backgroundColor: '#f3e6d3',
         }}
       >
         {/* Pages stacked vertically */}
-        <div
-          style={{
-            height: '500vh', // 5 pages * 100vh each
-            width: '100%',
-            transform: `translateY(-${currentIndex * 100}vh)`,
-            transition: 'transform 0.7s ease-in-out',
-          }}
-        >
-          <div style={{ height: '100vh', overflowY: 'auto' }}>
+        <div style={{ height: `${pages.length * 100}vh`, position: 'relative' }}>
+          <div
+            style={{
+              height: '100vh',
+              overflowY: 'auto',
+              scrollSnapAlign: 'start',
+            }}
+          >
             <LandingPage />
           </div>
-          <div style={{ height: '100vh', overflowY: 'auto' }}>
+          <div
+            style={{
+              height: '100vh',
+              overflowY: 'auto',
+              scrollSnapAlign: 'start',
+            }}
+          >
             <DebitCardDemoPage />
           </div>
-          <div style={{ height: '100vh', overflowY: 'auto' }}>
+          <div
+            style={{
+              height: '100vh',
+              overflowY: 'auto',
+              scrollSnapAlign: 'start',
+            }}
+          >
             <InsightPage />
           </div>
-          <div style={{ height: '100vh', overflowY: 'auto' }}>
+          <div
+            style={{
+              height: '100vh',
+              overflowY: 'auto',
+              scrollSnapAlign: 'start',
+            }}
+          >
             <InvestmentPage />
           </div>
-          <div style={{ height: '100vh', overflowY: 'auto' }}>
+          <div
+            style={{
+              height: '100vh',
+              overflowY: 'auto',
+              scrollSnapAlign: 'start',
+            }}
+          >
             <LearningPage />
           </div>
         </div>

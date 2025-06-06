@@ -23,7 +23,7 @@ export default function LearningPage() {
   );
 
   return (
-    <div style={{ padding: '20px', backgroundColor: '#f0f0f0', minHeight: '100vh' }}>
+    <div style={{ padding: '20px', backgroundColor: '#ecf39e', minHeight: '100vh' }}>
       <h1>Learning Center</h1>
 
       {/* Search Box */}

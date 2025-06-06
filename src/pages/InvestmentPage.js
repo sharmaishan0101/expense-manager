@@ -12,16 +12,27 @@ export default function InvestmentPage() {
   ];
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#ecf39e',
+        padding: '40px 20px',
+        fontFamily: 'Arial, sans-serif',
+        boxSizing: 'border-box',
+      }}
+    >
       <h2 style={{ marginBottom: '20px' }}>Investment Options</h2>
       <div style={{ display: 'grid', gap: '20px' }}>
         {investments.map((item, index) => (
-          <div key={index} style={{
-            backgroundColor: '#fff',
-            padding: '15px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-          }}>
+          <div
+            key={index}
+            style={{
+              backgroundColor: '#fff',
+              padding: '15px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            }}
+          >
             <h3>{item.title}</h3>
             <p>{item.description}</p>
           </div>

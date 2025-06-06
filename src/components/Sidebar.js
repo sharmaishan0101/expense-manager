@@ -17,7 +17,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       style={{
         width: '100%',
         height: '100%',
-        backgroundColor: '#ccc',
+        backgroundColor: '#fffffc',
         padding: '10px',
         boxSizing: 'border-box',
         display: 'flex',

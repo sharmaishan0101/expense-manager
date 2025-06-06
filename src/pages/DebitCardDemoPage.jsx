@@ -13,55 +13,75 @@ export default function DebitCardDemoPage() {
   const connectBank = () => setConnected(true);
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', fontFamily: 'Arial, sans-serif', padding: 20 }}>
-      <h2>Debit/Credit Card Transactions</h2>
-      {!connected ? (
-        <button
-          onClick={connectBank}
-          style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
-        >
-          Connect Bank (Demo)
-        </button>
-      ) : (
-        <>
-          <p><i>Showing sample transactions from your connected bank account:</i></p>
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              marginTop: '20px',
-            }}
+    <div
+      style={{
+        width: '100%',
+        minHeight: '100vh',
+        backgroundColor: '#ecf39e', // ✅ apply to entire background
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        paddingTop: 40,
+        boxSizing: 'border-box',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 600,
+          width: '100%',
+          fontFamily: 'Arial, sans-serif',
+          padding: 20,
+        }}
+      >
+        <h2>Debit/Credit Card Transactions</h2>
+        {!connected ? (
+          <button
+            onClick={connectBank}
+            style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
           >
-            <thead>
-              <tr style={{ borderBottom: '2px solid #444' }}>
-                <th style={{ textAlign: 'left', padding: '8px' }}>Date</th>
-                <th style={{ textAlign: 'left', padding: '8px' }}>Merchant</th>
-                <th style={{ textAlign: 'right', padding: '8px' }}>Amount ($)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {fakeTransactions.map(({ id, date, merchant, amount }) => (
-                <tr key={id} style={{ borderBottom: '1px solid #ddd' }}>
-                  <td style={{ padding: '8px' }}>{date}</td>
-                  <td style={{ padding: '8px' }}>{merchant}</td>
-                  <td
-                    style={{
-                      padding: '8px',
-                      textAlign: 'right',
-                      color: amount < 0 ? 'red' : 'green',
-                    }}
-                  >
-                    {amount.toFixed(2)}
-                  </td>
+            Connect Bank (Demo)
+          </button>
+        ) : (
+          <>
+            <p><i>Showing sample transactions from your connected bank account:</i></p>
+            <table
+              style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                marginTop: '20px',
+              }}
+            >
+              <thead>
+                <tr style={{ borderBottom: '2px solid #444' }}>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>Date</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>Merchant</th>
+                  <th style={{ textAlign: 'right', padding: '8px' }}>Amount ($)</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <p style={{ marginTop: '20px', fontStyle: 'italic', color: '#555' }}>
-            * This is sample data to demonstrate how transactions would appear after secure connection.
-          </p>
-        </>
-      )}
+              </thead>
+              <tbody>
+                {fakeTransactions.map(({ id, date, merchant, amount }) => (
+                  <tr key={id} style={{ borderBottom: '1px solid #ddd' }}>
+                    <td style={{ padding: '8px' }}>{date}</td>
+                    <td style={{ padding: '8px' }}>{merchant}</td>
+                    <td
+                      style={{
+                        padding: '8px',
+                        textAlign: 'right',
+                        color: amount < 0 ? 'red' : 'green',
+                      }}
+                    >
+                      {amount.toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p style={{ marginTop: '20px', fontStyle: 'italic', color: '#555' }}>
+              * This is sample data to demonstrate how transactions would appear after secure connection.
+            </p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
